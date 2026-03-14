@@ -9,7 +9,7 @@ import Badge from "./ui/Badge";
 import StarRating from "./ui/StarRating";
 import Price from "./ui/Price";
 import Button from "./ui/Button";
-import type { ProductListItem } from "@/app/types/product";
+import type { ProductListItem } from "@/types/product";
 
 type ProductCardProps = {
   product: ProductListItem;

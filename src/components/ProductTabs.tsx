@@ -1,7 +1,7 @@
 "use client";
 
 import Tabs from "./ui/Tabs";
-import type { Product } from "@/app/types/product";
+import type { Product } from "@/types/product";
 
 type ProductTabsProps = { product: Product };
 

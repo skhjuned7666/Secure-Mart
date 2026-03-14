@@ -6,18 +6,18 @@ import {
   getFrequentlyBoughtTogether,
   getMoreFromBrand,
   getFeaturedProducts,
-} from "@/app/lib/products";
-import AnnouncementBar from "@/app/components/AnnouncementBar";
-import Navbar from "@/app/components/Navbar";
-import Footer from "@/app/components/Footer";
-import ImageGallery from "@/app/components/ImageGallery";
-import ProductInfo from "@/app/components/ProductInfo";
-import BuyBox from "@/app/components/BuyBox";
-import ProductTabs from "@/app/components/ProductTabs";
-import ReviewList from "@/app/components/ReviewList";
-import Carousel from "@/app/components/Carousel";
-import ProductCard from "@/app/components/ProductCard";
-import Section from "@/app/components/ui/Section";
+} from "@/lib/products";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ImageGallery from "@/components/ImageGallery";
+import ProductInfo from "@/components/ProductInfo";
+import BuyBox from "@/components/BuyBox";
+import ProductTabs from "@/components/ProductTabs";
+import ReviewList from "@/components/ReviewList";
+import Carousel from "@/components/Carousel";
+import ProductCard from "@/components/ProductCard";
+import Section from "@/components/ui/Section";
 
 type PageProps = { params: Promise<{ productId: string }> };
 

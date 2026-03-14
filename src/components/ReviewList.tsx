@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Star, ThumbsUp, BadgeCheck } from "lucide-react";
 import Image from "next/image";
-import { getReviews } from "@/app/lib/products";
+import { getReviews } from "@/lib/products";
 import StarRating from "./ui/StarRating";
 import Section from "./ui/Section";
 

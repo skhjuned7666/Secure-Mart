@@ -3,7 +3,7 @@
 import { Truck } from "lucide-react";
 import StarRating from "./ui/StarRating";
 import Price from "./ui/Price";
-import type { Product } from "@/app/types/product";
+import type { Product } from "@/types/product";
 
 type ProductInfoProps = { product: Product };
 

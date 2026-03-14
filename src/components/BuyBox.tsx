@@ -6,7 +6,7 @@ import Price from "./ui/Price";
 import QuantitySelector from "./ui/QuantitySelector";
 import Button from "./ui/Button";
 import { ShoppingCart, Heart } from "lucide-react";
-import type { Product } from "@/app/types/product";
+import type { Product } from "@/types/product";
 
 type BuyBoxProps = {
   product: Product;

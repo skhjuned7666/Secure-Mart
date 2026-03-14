@@ -1,4 +1,4 @@
-import type { Product, ProductListItem, Review } from "@/app/types/product";
+import type { Product, ProductListItem, Review } from "@/types/product";
 
 const PLACEHOLDER_IMG = "https://picsum.photos/400/400";
 
