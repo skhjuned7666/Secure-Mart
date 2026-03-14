@@ -1,0 +1,454 @@
+import type { Product, ProductListItem, Review } from "@/types/product";
+
+const PLACEHOLDER_IMG = "https://picsum.photos/400/400";
+
+const sampleProducts: Product[] = [
+  {
+    id: "1",
+    title: "Samsung Galaxy S24 Ultra 5G",
+    description: "Experience the pinnacle of smartphone technology with the Samsung Galaxy S24 Ultra. Featuring a stunning 6.8-inch Dynamic AMOLED 2X display, the revolutionary 200MP camera system, and the powerful Snapdragon 8 Gen 3 chipset. Built with titanium for premium durability and includes S Pen for precision input.",
+    price: 79999,
+    originalPrice: 134999,
+    discount: 41,
+    rating: 4.7,
+    reviewsCount: 12840,
+    images: [
+      `${PLACEHOLDER_IMG}?random=1`,
+      `${PLACEHOLDER_IMG}?random=2`,
+      `${PLACEHOLDER_IMG}?random=3`,
+      `${PLACEHOLDER_IMG}?random=4`,
+      `${PLACEHOLDER_IMG}?random=5`,
+    ],
+    variants: ["128GB", "256GB", "512GB"],
+    stock: 150,
+    brand: "Samsung",
+    category: "Smartphones",
+    deliveryEstimate: "Delivery by Tomorrow, Mar 15",
+    variantLabels: {
+      Storage: ["128GB", "256GB", "512GB"],
+      Color: ["Titanium Black", "Titanium Gray", "Titanium Violet", "Titanium Yellow"],
+    },
+    features: [
+      "200MP Main Camera with Nightography",
+      "6.8\" QHD+ Dynamic AMOLED 2X 120Hz display",
+      "Snapdragon 8 Gen 3 for Galaxy",
+      "S Pen included, 2.5x faster response",
+      "5000mAh battery with 45W fast charging",
+      "Titanium frame, IP68 water and dust resistance",
+    ],
+    specifications: {
+      "Display Size": "6.8 inches",
+      "Display Type": "Dynamic AMOLED 2X",
+      "Resolution": "3120 x 1440 pixels",
+      "Processor": "Snapdragon 8 Gen 3",
+      "RAM": "12 GB",
+      "Storage": "256 GB (expandable)",
+      "Rear Camera": "200 MP + 12 MP + 50 MP + 10 MP",
+      "Front Camera": "12 MP",
+      "Battery": "5000 mAh",
+      "OS": "Android 14, One UI 6.1",
+      "Weight": "232 g",
+    },
+  },
+  {
+    id: "2",
+    title: "Apple MacBook Air M3 Chip",
+    description: "The MacBook Air with M3 chip brings incredible performance and all-day battery life in a thin, silent design. Perfect for work, creativity, and everyday use with a stunning Liquid Retina display and industry-leading efficiency.",
+    price: 99900,
+    originalPrice: 114900,
+    discount: 13,
+    rating: 4.9,
+    reviewsCount: 8730,
+    images: [
+      `${PLACEHOLDER_IMG}?random=10`,
+      `${PLACEHOLDER_IMG}?random=11`,
+      `${PLACEHOLDER_IMG}?random=12`,
+    ],
+    variants: ["8GB/256GB", "8GB/512GB", "16GB/512GB"],
+    stock: 85,
+    brand: "Apple",
+    category: "Laptops",
+    deliveryEstimate: "Delivery by Mar 16 - Mar 18",
+    variantLabels: {
+      "Memory": ["8GB", "16GB"],
+      "Storage": ["256GB", "512GB"],
+      "Color": ["Midnight", "Starlight", "Space Gray", "Silver"],
+    },
+    features: [
+      "M3 chip with 8-core CPU, 10-core GPU",
+      "Up to 18 hours battery life",
+      "13.6-inch Liquid Retina display",
+      "8GB unified memory, 256GB SSD",
+      "MagSafe charging, Thunderbolt 4",
+      "Fanless design, silent operation",
+    ],
+    specifications: {
+      "Chip": "Apple M3",
+      "Display": "13.6-inch Liquid Retina",
+      "Memory": "8 GB unified",
+      "Storage": "256 GB SSD",
+      "Camera": "1080p FaceTime HD",
+      "Ports": "2x Thunderbolt 4, MagSafe 3",
+      "Weight": "1.24 kg",
+      "OS": "macOS Sonoma",
+    },
+  },
+  {
+    id: "3",
+    title: "Sony WH-1000XM5 Wireless Headphones",
+    description: "Industry-leading noise cancellation meets premium sound. The WH-1000XM5 delivers exceptional audio quality with Adaptive Sound Control and 30-hour battery life. Perfect for travel and daily commutes.",
+    price: 19990,
+    originalPrice: 34990,
+    discount: 43,
+    rating: 4.8,
+    reviewsCount: 23100,
+    images: [
+      `${PLACEHOLDER_IMG}?random=20`,
+      `${PLACEHOLDER_IMG}?random=21`,
+      `${PLACEHOLDER_IMG}?random=22`,
+    ],
+    variants: ["Black", "Silver"],
+    stock: 200,
+    brand: "Sony",
+    category: "Audio",
+    deliveryEstimate: "Delivery by Tomorrow, Mar 15",
+    variantLabels: {
+      Color: ["Black", "Silver"],
+    },
+    features: [
+      "Industry-leading noise cancellation",
+      "30-hour battery life",
+      "Multipoint connection",
+      "Speak-to-chat technology",
+      "Premium sound with LDAC",
+      "Lightweight, comfortable design",
+    ],
+    specifications: {
+      "Driver": "30 mm",
+      "Frequency": "4 Hz - 40 kHz",
+      "Battery Life": "30 hours (ANC on)",
+      "Charging": "USB Type-C, 3 min = 3 hours",
+      "Bluetooth": "5.2",
+      "Weight": "250 g",
+      "Foldable": "Yes",
+    },
+  },
+  {
+    id: "4",
+    title: "Nike Air Max 270 Sneakers",
+    description: "The Nike Air Max 270 delivers a bold look and all-day comfort. Featuring the tallest heel Air unit yet for a super-soft ride that feels as impossible as it looks.",
+    price: 7995,
+    originalPrice: 12995,
+    discount: 38,
+    rating: 4.5,
+    reviewsCount: 9200,
+    images: [
+      `${PLACEHOLDER_IMG}?random=30`,
+      `${PLACEHOLDER_IMG}?random=31`,
+    ],
+    variants: ["UK 7", "UK 8", "UK 9", "UK 10", "UK 11"],
+    stock: 75,
+    brand: "Nike",
+    category: "Footwear",
+    deliveryEstimate: "Delivery by Mar 17 - Mar 20",
+    variantLabels: {
+      Size: ["UK 7", "UK 8", "UK 9", "UK 10", "UK 11"],
+      Color: ["Black/White", "Sail", "Olive"],
+    },
+    features: [
+      "270° Max Air unit for cushioning",
+      "Breathable mesh upper",
+      "Rubber outsole for traction",
+      "Lightweight, flexible design",
+      "Iconic Air Max look",
+    ],
+    specifications: {
+      "Upper": "Mesh and synthetic",
+      "Sole": "Rubber with Air unit",
+      "Closure": "Lace-up",
+      "Fit": "Regular",
+      "Care": "Machine wash cold",
+    },
+  },
+  {
+    id: "5",
+    title: "Instant Pot Duo 7-in-1 Electric Pressure Cooker",
+    description: "The Instant Pot Duo replaces 7 kitchen appliances: pressure cooker, slow cooker, rice cooker, steamer, sauté pan, yogurt maker, and warmer. 6-liter capacity perfect for family meals.",
+    price: 6499,
+    originalPrice: 9999,
+    discount: 35,
+    rating: 4.6,
+    reviewsCount: 31500,
+    images: [
+      `${PLACEHOLDER_IMG}?random=40`,
+      `${PLACEHOLDER_IMG}?random=41`,
+      `${PLACEHOLDER_IMG}?random=42`,
+    ],
+    variants: ["6L", "8L"],
+    stock: 120,
+    brand: "Instant Pot",
+    category: "Kitchen",
+    deliveryEstimate: "Delivery by Mar 16 - Mar 19",
+    variantLabels: {
+      Capacity: ["6 Litre", "8 Litre"],
+      Color: ["Black", "Stainless Steel"],
+    },
+    features: [
+      "7-in-1: Pressure cook, slow cook, rice, steam, sauté, yogurt, warm",
+      "6-liter capacity, serves 6+",
+      "14 one-touch programs",
+      "Stainless steel inner pot",
+      "Safety lid lock and pressure release",
+    ],
+    specifications: {
+      "Capacity": "6 L",
+      "Power": "1000 W",
+      "Programs": "14",
+      "Material": "Stainless steel",
+      "Dimensions": "33 x 33 x 33 cm",
+      "Weight": "5.5 kg",
+    },
+  },
+  {
+    id: "6",
+    title: "Dyson V15 Detect Cordless Vacuum",
+    description: "Laser reveals microscopic dust. The V15 Detect features a laser dust sensor, LCD screen showing particle count, and whole-machine HEPA filtration. Up to 60 minutes of fade-free suction.",
+    price: 44900,
+    originalPrice: 64900,
+    discount: 31,
+    rating: 4.8,
+    reviewsCount: 5400,
+    images: [
+      `${PLACEHOLDER_IMG}?random=50`,
+      `${PLACEHOLDER_IMG}?random=51`,
+    ],
+    variants: ["Gold", "Nickel"],
+    stock: 45,
+    brand: "Dyson",
+    category: "Home",
+    deliveryEstimate: "Delivery by Mar 18 - Mar 21",
+    variantLabels: {
+      Color: ["Gold", "Nickel"],
+    },
+    features: [
+      "Laser dust detection reveals microscopic particles",
+      "LCD screen shows particle count in real time",
+      "60 min run time, fade-free suction",
+      "Whole-machine HEPA filtration",
+      "Converts to handheld",
+      "Laser slim fluffy cleaner head",
+    ],
+    specifications: {
+      "Run Time": "60 minutes",
+      "Suction": "240 AW",
+      "Dustbin": "0.76 L",
+      "Filtration": "HEPA",
+      "Charging": "4.5 hours",
+      "Weight": "3.2 kg",
+    },
+  },
+  {
+    id: "7",
+    title: "Canon EOS R50 Mirrorless Camera",
+    description: "Compact, lightweight mirrorless camera with 24.2MP sensor, 4K video, and Dual Pixel CMOS AF II. Perfect for vloggers and content creators.",
+    price: 52990,
+    originalPrice: 74990,
+    discount: 29,
+    rating: 4.7,
+    reviewsCount: 3800,
+    images: [
+      `${PLACEHOLDER_IMG}?random=60`,
+      `${PLACEHOLDER_IMG}?random=61`,
+      `${PLACEHOLDER_IMG}?random=62`,
+    ],
+    variants: ["Body", "With 18-45mm Kit"],
+    stock: 60,
+    brand: "Canon",
+    category: "Cameras",
+    deliveryEstimate: "Delivery by Mar 17 - Mar 20",
+    variantLabels: {
+      Kit: ["Body Only", "With 18-45mm Kit", "With 18-150mm Kit"],
+      Color: ["Black"],
+    },
+    features: [
+      "24.2MP APS-C sensor",
+      "4K 30p video, no crop",
+      "Dual Pixel CMOS AF II",
+      "Compact and lightweight",
+      "Creative Assist and Guided UI",
+      "Bluetooth and Wi-Fi",
+    ],
+    specifications: {
+      "Sensor": "24.2 MP APS-C",
+      "Video": "4K 30p",
+      "AF": "Dual Pixel CMOS AF II",
+      "LCD": "3\" vari-angle touchscreen",
+      "Connectivity": "Wi-Fi, Bluetooth",
+      "Weight": "375 g (body only)",
+    },
+  },
+  {
+    id: "8",
+    title: "boAt Airdopes 141 TWS Earbuds",
+    description: "Affordable true wireless earbuds with 42 hours total playtime, IPX4 sweat resistance, and instant connect. Perfect for music and calls on the go.",
+    price: 999,
+    originalPrice: 2990,
+    discount: 67,
+    rating: 4.3,
+    reviewsCount: 148200,
+    images: [
+      `${PLACEHOLDER_IMG}?random=70`,
+      `${PLACEHOLDER_IMG}?random=71`,
+    ],
+    variants: ["Black", "Blue", "Green"],
+    stock: 500,
+    brand: "boAt",
+    category: "Audio",
+    deliveryEstimate: "Delivery by Mar 16 - Mar 18",
+    variantLabels: {
+      Color: ["Bold Black", "Active Black", "Boom Green", "Stormy Blue"],
+    },
+    features: [
+      "42 hours total playtime",
+      "IPX4 sweat and water resistant",
+      "Instant connect with IWP tech",
+      "8mm drivers for clear sound",
+      "Touch controls",
+      "Voice assistant support",
+    ],
+    specifications: {
+      "Driver": "8 mm",
+      "Battery": "42 hrs total (earbuds + case)",
+      "IP Rating": "IPX4",
+      "Bluetooth": "5.0",
+      "Charging": "USB Type-C",
+    },
+  },
+];
+
+const sampleReviews: Review[] = [
+  {
+    id: "r1",
+    productId: "1",
+    userId: "u1",
+    userName: "Rahul K.",
+    rating: 5,
+    title: "Best phone I've ever used",
+    body: "The camera is incredible, battery lasts all day, and the S Pen is surprisingly useful. Display is stunning. Worth every rupee.",
+    verifiedPurchase: true,
+    createdAt: "2025-03-10T10:00:00Z",
+    helpfulCount: 124,
+  },
+  {
+    id: "r2",
+    productId: "1",
+    userId: "u2",
+    userName: "Priya M.",
+    rating: 4,
+    title: "Great but heavy",
+    body: "Love the features and performance. Only downside is the weight - it's quite heavy for one-handed use. Otherwise excellent.",
+    verifiedPurchase: true,
+    images: [`${PLACEHOLDER_IMG}?random=rev1`],
+    createdAt: "2025-03-08T14:30:00Z",
+    helpfulCount: 89,
+  },
+  {
+    id: "r3",
+    productId: "1",
+    userId: "u3",
+    userName: "Amit S.",
+    rating: 5,
+    title: "Worth the upgrade",
+    body: "Upgraded from S22 Ultra. The performance improvement is noticeable. 200MP camera shots are impressive. Fast delivery from Secure-Mart.",
+    verifiedPurchase: true,
+    createdAt: "2025-03-05T09:15:00Z",
+    helpfulCount: 56,
+  },
+];
+
+function toListItem(p: Product): ProductListItem {
+  return {
+    id: p.id,
+    title: p.title,
+    brand: p.brand,
+    price: p.price,
+    discount: p.discount,
+    rating: p.rating,
+    images: p.images,
+    reviewsCount: p.reviewsCount,
+  };
+}
+
+export async function getProduct(productId: string): Promise<Product | null> {
+  await new Promise((r) => setTimeout(r, 150));
+  return sampleProducts.find((p) => p.id === productId) ?? null;
+}
+
+export async function getRelatedProducts(
+  productId: string,
+  limit = 8
+): Promise<ProductListItem[]> {
+  await new Promise((r) => setTimeout(r, 80));
+  return sampleProducts
+    .filter((p) => p.id !== productId)
+    .slice(0, limit)
+    .map(toListItem);
+}
+
+export async function getFrequentlyBoughtTogether(productId: string): Promise<{
+  main: Product;
+  suggested: ProductListItem[];
+  bundlePrice: number;
+} | null> {
+  await new Promise((r) => setTimeout(r, 100));
+  const main = sampleProducts.find((p) => p.id === productId);
+  if (!main) return null;
+  const suggested = sampleProducts
+    .filter((p) => p.id !== productId)
+    .slice(0, 3)
+    .map(toListItem);
+  const bundlePrice = main.price + suggested.reduce((sum, p) => sum + p.price, 0);
+  return { main, suggested, bundlePrice };
+}
+
+export async function getReviews(productId: string): Promise<{
+  averageRating: number;
+  breakdown: Record<number, number>;
+  reviews: Review[];
+}> {
+  await new Promise((r) => setTimeout(r, 80));
+  const product = sampleProducts.find((p) => p.id === productId);
+  const reviews = sampleReviews.filter((r) => r.productId === productId);
+  if (reviews.length === 0) {
+    return {
+      averageRating: product?.rating ?? 0,
+      breakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+      reviews: [],
+    };
+  }
+  const sum = reviews.reduce((s, r) => s + r.rating, 0);
+  const averageRating = Math.round((sum / reviews.length) * 10) / 10;
+  const breakdown: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  reviews.forEach((r) => {
+    breakdown[r.rating] = (breakdown[r.rating] ?? 0) + 1;
+  });
+  return { averageRating, breakdown, reviews };
+}
+
+export async function getMoreFromBrand(
+  brand: string,
+  excludeId: string,
+  limit = 6
+): Promise<ProductListItem[]> {
+  await new Promise((r) => setTimeout(r, 80));
+  return sampleProducts
+    .filter((p) => p.brand === brand && p.id !== excludeId)
+    .slice(0, limit)
+    .map(toListItem);
+}
+
+/** Featured/promotional products for ads section */
+export async function getFeaturedProducts(limit = 6): Promise<ProductListItem[]> {
+  await new Promise((r) => setTimeout(r, 50));
+  return sampleProducts.slice(0, limit).map(toListItem);
+}

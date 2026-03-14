@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { Heart, Star, ShoppingCart, Eye, Zap, ArrowRight } from "lucide-react";
 
 const products = [
@@ -145,13 +146,18 @@ function ProductCard({ product }: { product: typeof products[0] }) {
   const [wishlisted, setWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  const handleCart = () => {
+  const handleCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 1800);
   };
 
   return (
-    <div className="group bg-white rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 overflow-hidden relative">
+    <Link
+      href={`/products/${product.id}`}
+      className="block group bg-white rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 overflow-hidden relative"
+    >
       {/* Badge */}
       <div className={`absolute top-3 left-3 z-10 ${product.badgeColor} text-white text-xs font-black px-2 py-0.5 rounded-full tracking-wide`}>
         {product.badge}
@@ -159,7 +165,12 @@ function ProductCard({ product }: { product: typeof products[0] }) {
 
       {/* Wishlist */}
       <button
-        onClick={() => setWishlisted(!wishlisted)}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setWishlisted(!wishlisted);
+        }}
         className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-sm
           ${wishlisted ? "bg-red-500 text-white" : "bg-white text-gray-400 hover:text-red-400 border border-gray-200"}`}
       >
@@ -171,11 +182,11 @@ function ProductCard({ product }: { product: typeof products[0] }) {
         <div className="text-7xl sm:text-8xl group-hover:scale-110 transition-transform duration-500 filter drop-shadow-lg">
           {product.emoji}
         </div>
-        {/* Quick View Overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-          <button className="bg-white text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow hover:shadow-md transition flex items-center gap-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        {/* Quick View Overlay - click goes to PDP via parent Link */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 pointer-events-none">
+          <span className="bg-white text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow flex items-center gap-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
             <Eye size={12} /> Quick View
-          </button>
+          </span>
         </div>
         {/* Discount Ribbon */}
         <div className="absolute bottom-3 left-3 bg-green-500 text-white text-xs font-black px-2 py-0.5 rounded-full">
@@ -224,6 +235,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
 
         {/* Add to Cart Button */}
         <button
+          type="button"
           onClick={handleCart}
           className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95
             ${addedToCart
@@ -238,7 +250,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
           )}
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
 
