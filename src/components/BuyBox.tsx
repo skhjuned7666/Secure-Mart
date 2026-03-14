@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Truck, Lock } from "lucide-react";
 import Price from "./ui/Price";
 import QuantitySelector from "./ui/QuantitySelector";
 import Button from "./ui/Button";
 import { ShoppingCart, Heart } from "lucide-react";
 import type { Product } from "@/types/product";
+import { addToCart } from "@/lib/cartStorage";
 
 type BuyBoxProps = {
   product: Product;
@@ -15,6 +17,7 @@ type BuyBoxProps = {
 };
 
 export default function BuyBox({ product, onAddToCart, onBuyNow }: BuyBoxProps) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -25,9 +28,15 @@ export default function BuyBox({ product, onAddToCart, onBuyNow }: BuyBoxProps) 
   const maxQty = Math.min(product.stock, 10);
 
   const handleAddToCart = () => {
-    onAddToCart?.(product.id, quantity);
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
+    if (onAddToCart) {
+      onAddToCart(product.id, quantity);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
+    } else {
+      addToCart(product.id, quantity);
+      setAddedToCart(true);
+      router.push(`/add-to-cart?productId=${product.id}`);
+    }
   };
 
   return (

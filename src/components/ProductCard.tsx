@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
 import Card from "./ui/Card";
@@ -10,6 +11,7 @@ import StarRating from "./ui/StarRating";
 import Price from "./ui/Price";
 import Button from "./ui/Button";
 import type { ProductListItem } from "@/types/product";
+import { addToCart } from "@/lib/cartStorage";
 
 type ProductCardProps = {
   product: ProductListItem;
@@ -22,6 +24,7 @@ export default function ProductCard({
   variant = "full",
   showQuickAdd = true,
 }: ProductCardProps) {
+  const router = useRouter();
   const [wishlisted, setWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -29,7 +32,8 @@ export default function ProductCard({
     e.preventDefault();
     e.stopPropagation();
     setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 1800);
+     addToCart(product.id, 1);
+    router.push(`/add-to-cart?productId=${product.id}`);
   };
 
   const isCompact = variant === "compact";

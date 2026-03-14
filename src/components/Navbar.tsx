@@ -1,19 +1,30 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import {
-  Search, ShoppingCart, Heart, User, Menu, X,
-  ChevronDown, MapPin, Bell, Package, LogIn
+  Search,
+  ShoppingCart,
+  Heart,
+  User,
+  Menu,
+  X,
+  ChevronDown,
+  MapPin,
+  Bell,
+  Package,
+  LogIn,
 } from "lucide-react";
+import { getCartCount, CART_UPDATE_EVENT } from "@/lib/cartStorage";
 
 const navLinks = [
-  { label: "Electronics", href: "#" },
-  { label: "Fashion", href: "#" },
-  { label: "Home & Living", href: "#" },
-  { label: "Beauty", href: "#" },
-  { label: "Grocery", href: "#" },
-  { label: "Sports", href: "#" },
-  { label: "Toys", href: "#" },
-  { label: "Books", href: "#" },
+  { label: "Electronics", href: "/" },
+  { label: "Fashion", href: "/" },
+  { label: "Home & Living", href: "/" },
+  { label: "Beauty", href: "/" },
+  { label: "Grocery", href: "/" },
+  { label: "Sports", href: "/" },
+  { label: "Toys", href: "/" },
+  { label: "Books", href: "/" },
 ];
 
 const searchSuggestions = [
@@ -31,7 +42,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartCount] = useState(3);
+  const [cartCount, setCartCount] = useState(0);
   const [wishlistCount] = useState(7);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -46,6 +57,23 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    // Initialize cart count from localStorage
+    setCartCount(getCartCount());
+
+    function handleCartUpdate() {
+      setCartCount(getCartCount());
+    }
+
+    window.addEventListener(CART_UPDATE_EVENT, handleCartUpdate);
+    window.addEventListener("storage", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener(CART_UPDATE_EVENT, handleCartUpdate);
+      window.removeEventListener("storage", handleCartUpdate);
+    };
+  }, []);
+
   const filtered = searchSuggestions.filter((s) =>
     s.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -56,7 +84,7 @@ export default function Navbar() {
       <div className="bg-[#131921] text-white w-full">
         <div className="w-full px-3 sm:px-4 lg:px-6 py-3 flex items-center gap-2 lg:gap-3">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-1.5 flex-shrink-0 group">
+          <Link href="/" className="flex items-center gap-1.5 flex-shrink-0 group">
             <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
               <span className="text-white font-black text-sm">S</span>
             </div>
@@ -64,7 +92,7 @@ export default function Navbar() {
               <span className="text-white font-black text-lg tracking-tight">Secure</span>
               <span className="text-yellow-400 font-black text-lg tracking-tight -mt-1.5">Mart</span>
             </div>
-          </a>
+          </Link>
 
           {/* Deliver To */}
           <div className="hidden lg:flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition-colors flex-shrink-0">
@@ -138,11 +166,18 @@ export default function Navbar() {
             </button>
 
             {/* Cart */}
-            <button className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group">
+            <Link
+              href="/add-to-cart"
+              className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group"
+            >
               <ShoppingCart size={20} />
-              <span className="absolute -top-0.5 -right-0.5 bg-yellow-400 text-gray-900 text-xs rounded-full w-4 h-4 flex items-center justify-center font-black">{cartCount}</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-yellow-400 text-gray-900 text-xs rounded-full w-4 h-4 flex items-center justify-center font-black">
+                  {cartCount}
+                </span>
+              )}
               <span className="hidden lg:block text-xs mt-0.5">Cart</span>
-            </button>
+            </Link>
 
             {/* Account */}
             <button className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap">
@@ -167,7 +202,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center justify-center overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-0 flex-nowrap">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
                   href={link.href}
                   onMouseEnter={() => setActiveCategory(link.label)}
@@ -182,11 +217,14 @@ export default function Navbar() {
                   {activeCategory === link.label && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-yellow-400" />
                   )}
-                </a>
+                </Link>
               ))}
-              <a href="#" className="flex items-center gap-1 px-3.5 py-3 text-sm font-bold text-red-400 hover:text-red-300 transition-colors whitespace-nowrap">
+              <Link
+                href="/"
+                className="flex items-center gap-1 px-3.5 py-3 text-sm font-bold text-red-400 hover:text-red-300 transition-colors whitespace-nowrap"
+              >
                 🔥 Sale
-              </a>
+              </Link>
             </div>
           </nav>
         </div>
@@ -207,23 +245,23 @@ export default function Navbar() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
                   href={link.href}
                   className="px-3 py-2.5 bg-white/5 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
             <div className="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4 text-sm">
-              <a href="#" className="flex items-center gap-2 hover:text-yellow-400">
+              <Link href="/" className="flex items-center gap-2 hover:text-yellow-400">
                 <Package size={16} /> Orders
-              </a>
-              <a href="#" className="flex items-center gap-2 hover:text-yellow-400">
+              </Link>
+              <Link href="/" className="flex items-center gap-2 hover:text-yellow-400">
                 <Heart size={16} /> Wishlist ({wishlistCount})
-              </a>
+              </Link>
             </div>
           </div>
         </div>
