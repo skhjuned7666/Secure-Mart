@@ -64,6 +64,10 @@ export default function ProductCard({
     ? "h-full hover:border-orange-200 hover:shadow-md transition-all"
     : "hover:border-orange-200 hover:shadow-lg transition-all";
 
+  const infoContainerClass = isCompact
+    ? "p-3 flex flex-col justify-between min-h-[130px]"
+    : "p-3";
+
   const cardContent = (
     <>
       <div className="relative aspect-square bg-gray-50">
@@ -97,7 +101,7 @@ export default function ProductCard({
           <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
         </button>
       </div>
-      <div className={isCompact ? "p-3" : "p-3"}>
+      <div className={infoContainerClass}>
         {!isCompact && (
           <p className="text-xs text-gray-500 mb-0.5">{product.brand}</p>
         )}

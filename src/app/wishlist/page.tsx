@@ -116,9 +116,11 @@ export default function WishlistPage() {
 
         {!loading && items.length > 0 && (
           <div className="bg-white border border-gray-200 rounded-xl p-5 sm:p-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
               {items.map((p) => (
-                <ProductCard key={p.id} product={p} showQuickAdd />
+                <div key={p.id} className="h-full">
+                  <ProductCard product={p} variant="compact" showQuickAdd />
+                </div>
               ))}
             </div>
           </div>
