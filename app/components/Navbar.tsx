@@ -164,7 +164,7 @@ export default function Navbar() {
       {/* Category Navigation Bar */}
       <div className="bg-[#232f3e] text-white border-t border-gray-600/30 w-full">
         <div className="w-full px-3 sm:px-4 lg:px-6">
-          <nav className="hidden lg:flex items-center overflow-x-auto scrollbar-hide">
+          <nav className="hidden lg:flex items-center justify-center overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-0 flex-nowrap">
               {navLinks.map((link) => (
                 <a
