@@ -53,8 +53,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 shadow-lg">
       {/* Main Navbar */}
-      <div className="bg-[#131921] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3 lg:gap-5">
+      <div className="bg-[#131921] text-white w-full">
+        <div className="w-full px-3 sm:px-4 lg:px-6 py-3 flex items-center gap-2 lg:gap-3">
           {/* Logo */}
           <a href="#" className="flex items-center gap-1.5 flex-shrink-0 group">
             <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
@@ -76,7 +76,7 @@ export default function Navbar() {
           </div>
 
           {/* Search Bar */}
-          <div ref={searchRef} className="flex-1 relative max-w-2xl">
+          <div ref={searchRef} className="flex-1 relative min-w-0">
             <div className="flex rounded-lg overflow-hidden border-2 border-transparent focus-within:border-yellow-400 transition-all shadow-sm">
               <select className="bg-gray-200 text-gray-700 text-xs px-2 py-2.5 border-r border-gray-300 cursor-pointer focus:outline-none hidden sm:block">
                 <option>All</option>
@@ -123,29 +123,29 @@ export default function Navbar() {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-1 lg:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-0.5 lg:gap-2 flex-shrink-0">
             {/* Notifications */}
-            <button className="hidden lg:flex flex-col items-center p-2 hover:text-yellow-400 transition-colors relative">
+            <button className="hidden lg:flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative">
               <Bell size={20} />
               <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">2</span>
             </button>
 
             {/* Wishlist */}
-            <button className="flex flex-col items-center p-2 hover:text-yellow-400 transition-colors relative group">
+            <button className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group">
               <Heart size={20} className="group-hover:fill-red-400 group-hover:text-red-400 transition-all" />
               <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">{wishlistCount}</span>
               <span className="hidden lg:block text-xs mt-0.5">Wishlist</span>
             </button>
 
             {/* Cart */}
-            <button className="flex flex-col items-center p-2 hover:text-yellow-400 transition-colors relative group">
+            <button className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group">
               <ShoppingCart size={20} />
               <span className="absolute -top-0.5 -right-0.5 bg-yellow-400 text-gray-900 text-xs rounded-full w-4 h-4 flex items-center justify-center font-black">{cartCount}</span>
               <span className="hidden lg:block text-xs mt-0.5">Cart</span>
             </button>
 
             {/* Account */}
-            <button className="hidden lg:flex items-center gap-1.5 px-3 py-2 bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 active:scale-95">
+            <button className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap">
               <LogIn size={16} />
               Sign In
             </button>
@@ -153,7 +153,7 @@ export default function Navbar() {
             {/* Mobile Menu */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 hover:text-yellow-400 transition-colors"
+              className="lg:hidden p-1.5 hover:text-yellow-400 transition-colors"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -162,8 +162,8 @@ export default function Navbar() {
       </div>
 
       {/* Category Navigation Bar */}
-      <div className="bg-[#232f3e] text-white border-t border-gray-600/30">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="bg-[#232f3e] text-white border-t border-gray-600/30 w-full">
+        <div className="w-full px-3 sm:px-4 lg:px-6">
           <nav className="hidden lg:flex items-center overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-0 flex-nowrap">
               {navLinks.map((link) => (
@@ -194,8 +194,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#131921] text-white border-t border-gray-700 shadow-2xl">
-          <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="lg:hidden bg-[#131921] text-white border-t border-gray-700 shadow-2xl w-full">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-700">
               <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
                 <User size={20} className="text-gray-900" />
