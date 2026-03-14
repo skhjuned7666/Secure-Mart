@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -31,7 +31,25 @@ type FrequentlyBoughtData = {
   bundlePrice: number;
 } | null;
 
-export default function AddToCartPage() {
+function AddToCartPageFallback() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <AnnouncementBar />
+      <Navbar />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+          Shopping Cart
+        </h1>
+        <div className="bg-white border border-gray-200 rounded-xl p-6 text-sm text-gray-600">
+          Loading your cart...
+        </div>
+      </div>
+      <Footer />
+    </main>
+  );
+}
+
+function AddToCartContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
@@ -412,5 +430,13 @@ export default function AddToCartPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function AddToCartPage() {
+  return (
+    <Suspense fallback={<AddToCartPageFallback />}>
+      <AddToCartContent />
+    </Suspense>
   );
 }
