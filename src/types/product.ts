@@ -1,21 +1,7 @@
-<<<<<<< HEAD
 /**
  * Shared TypeScript types for products and related entities.
  */
 
-export interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  discount?: number;
-  rating: number;
-  reviews: number;
-  inStock?: boolean;
-}
-=======
 export type Product = {
   id: string;
   title: string;
@@ -58,4 +44,3 @@ export type ProductListItem = Pick<
   Product,
   "id" | "title" | "brand" | "price" | "discount" | "rating" | "images"
 > & { reviewsCount: number };
->>>>>>> 17e6cd4d44f3f2bca007a407e6ab0c8e00f6d84a
