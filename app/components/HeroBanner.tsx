@@ -179,20 +179,18 @@ function BannerSlide({ slide, isActive }: { slide: typeof slides[0]; isActive: b
           <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
         </div>
 
-        {/* Background Image - Right Aligned */}
+        {/* Background Image - Right Aligned (no extra color overlay) */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2">
             <Image
               src={slide.imageUrl}
               alt={slide.headline}
               fill
-              className="object-cover opacity-40"
+              className="object-cover"
               priority={isActive}
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-          {/* Gradient overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
         </div>
 
         {/* Content */}
