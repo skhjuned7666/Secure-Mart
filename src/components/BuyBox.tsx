@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, Lock } from "lucide-react";
 import Price from "./ui/Price";
@@ -9,6 +9,7 @@ import Button from "./ui/Button";
 import { ShoppingCart, Heart } from "lucide-react";
 import type { Product } from "@/types/product";
 import { addToCart } from "@/lib/cartStorage";
+import { isInWishlist, toggleWishlist, WISHLIST_UPDATE_EVENT } from "@/lib/wishlistStorage";
 
 type BuyBoxProps = {
   product: Product;
@@ -21,6 +22,21 @@ export default function BuyBox({ product, onAddToCart, onBuyNow }: BuyBoxProps) 
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  useEffect(() => {
+    setWishlisted(isInWishlist(product.id));
+
+    function handleWishlistUpdate() {
+      setWishlisted(isInWishlist(product.id));
+    }
+
+    window.addEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+    window.addEventListener("storage", handleWishlistUpdate);
+    return () => {
+      window.removeEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+      window.removeEventListener("storage", handleWishlistUpdate);
+    };
+  }, [product.id]);
 
   const originalPrice =
     product.originalPrice ??
@@ -96,7 +112,7 @@ export default function BuyBox({ product, onAddToCart, onBuyNow }: BuyBoxProps) 
             size="md"
             fullWidth
             leftIcon={<Heart size={18} fill={wishlisted ? "currentColor" : "none"} />}
-            onClick={() => setWishlisted(!wishlisted)}
+            onClick={() => setWishlisted(toggleWishlist(product.id).inWishlist)}
             className={wishlisted ? "!border-red-300 !bg-red-50 !text-red-600" : ""}
           >
             {wishlisted ? "Saved to Wishlist" : "Add to Wishlist"}

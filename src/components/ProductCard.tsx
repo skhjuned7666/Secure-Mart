@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -12,6 +12,11 @@ import Price from "./ui/Price";
 import Button from "./ui/Button";
 import type { ProductListItem } from "@/types/product";
 import { addToCart } from "@/lib/cartStorage";
+import {
+  isInWishlist,
+  toggleWishlist,
+  WISHLIST_UPDATE_EVENT,
+} from "@/lib/wishlistStorage";
 
 type ProductCardProps = {
   product: ProductListItem;
@@ -27,6 +32,21 @@ export default function ProductCard({
   const router = useRouter();
   const [wishlisted, setWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  useEffect(() => {
+    setWishlisted(isInWishlist(product.id));
+
+    function handleWishlistUpdate() {
+      setWishlisted(isInWishlist(product.id));
+    }
+
+    window.addEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+    window.addEventListener("storage", handleWishlistUpdate);
+    return () => {
+      window.removeEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+      window.removeEventListener("storage", handleWishlistUpdate);
+    };
+  }, [product.id]);
 
   const handleCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,7 +85,8 @@ export default function ProductCard({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setWishlisted(!wishlisted);
+            const result = toggleWishlist(product.id);
+            setWishlisted(result.inWishlist);
           }}
           className={`absolute top-2 right-2 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow transition-all ${
             wishlisted

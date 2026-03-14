@@ -19,8 +19,7 @@ import Footer from "@/components/Footer";
 import Carousel from "@/components/Carousel";
 import ProductCard from "@/components/ProductCard";
 import Price from "@/components/ui/Price";
-import StarRating from "@/components/ui/StarRating";
-import AddToCartGiftCheckbox from "@/components/add-to-cart/Added-Product/AddToCartGiftCheckbox";
+import AddToCartGiftCheckbox from "@/components/AddToCartGiftCheckbox";
 import { getCartItems, type CartItem } from "@/lib/cartStorage";
 
 type CartProduct = Product & { quantity: number };

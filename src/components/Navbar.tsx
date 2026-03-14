@@ -15,6 +15,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { getCartCount, CART_UPDATE_EVENT } from "@/lib/cartStorage";
+import { getWishlistCount, WISHLIST_UPDATE_EVENT } from "@/lib/wishlistStorage";
 
 const navLinks = [
   { label: "Electronics", href: "/" },
@@ -43,7 +44,7 @@ export default function Navbar() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount] = useState(7);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -71,6 +72,23 @@ export default function Navbar() {
     return () => {
       window.removeEventListener(CART_UPDATE_EVENT, handleCartUpdate);
       window.removeEventListener("storage", handleCartUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Initialize wishlist count from localStorage
+    setWishlistCount(getWishlistCount());
+
+    function handleWishlistUpdate() {
+      setWishlistCount(getWishlistCount());
+    }
+
+    window.addEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+    window.addEventListener("storage", handleWishlistUpdate);
+
+    return () => {
+      window.removeEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
+      window.removeEventListener("storage", handleWishlistUpdate);
     };
   }, []);
 
@@ -159,11 +177,18 @@ export default function Navbar() {
             </button>
 
             {/* Wishlist */}
-            <button className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group">
+            <Link
+              href="/wishlist"
+              className="flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative group"
+            >
               <Heart size={20} className="group-hover:fill-red-400 group-hover:text-red-400 transition-all" />
-              <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">{wishlistCount}</span>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                  {wishlistCount}
+                </span>
+              )}
               <span className="hidden lg:block text-xs mt-0.5">Wishlist</span>
-            </button>
+            </Link>
 
             {/* Cart */}
             <Link
@@ -259,7 +284,7 @@ export default function Navbar() {
               <Link href="/" className="flex items-center gap-2 hover:text-yellow-400">
                 <Package size={16} /> Orders
               </Link>
-              <Link href="/" className="flex items-center gap-2 hover:text-yellow-400">
+              <Link href="/wishlist" className="flex items-center gap-2 hover:text-yellow-400">
                 <Heart size={16} /> Wishlist ({wishlistCount})
               </Link>
             </div>
