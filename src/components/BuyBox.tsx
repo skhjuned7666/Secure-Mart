@@ -101,7 +101,14 @@ export default function BuyBox({ product, onAddToCart, onBuyNow }: BuyBoxProps) 
             variant="secondary"
             size="lg"
             fullWidth
-            onClick={() => onBuyNow?.(product.id, quantity)}
+            onClick={() => {
+              if (onBuyNow) {
+                onBuyNow(product.id, quantity);
+              } else {
+                addToCart(product.id, quantity);
+                router.push("/checkout");
+              }
+            }}
             disabled={product.stock === 0}
             className="!bg-yellow-400 !text-gray-900 hover:!bg-yellow-500 !border !border-yellow-500"
           >
