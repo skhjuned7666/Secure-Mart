@@ -453,6 +453,46 @@ export async function getFeaturedProducts(limit = 6): Promise<ProductListItem[]>
   return sampleProducts.slice(0, limit).map(toListItem);
 }
 
+/** Map nav category labels to product categories for filter */
+const NAV_CATEGORY_TO_PRODUCT: Record<string, string[]> = {
+  Electronics: ["Smartphones", "Laptops", "Audio", "Cameras"],
+  Fashion: ["Footwear"],
+  "Home & Living": ["Home", "Kitchen"],
+  Beauty: [],
+  Grocery: [],
+  Sports: [],
+  Toys: [],
+  Books: [],
+};
+
+/** Search products by query and optional category (nav label e.g. "Electronics") */
+export async function searchProducts(
+  query: string,
+  category?: string
+): Promise<ProductListItem[]> {
+  await new Promise((r) => setTimeout(r, 100));
+  const q = query.trim().toLowerCase();
+  const productCategories =
+    category && NAV_CATEGORY_TO_PRODUCT[category]
+      ? NAV_CATEGORY_TO_PRODUCT[category]
+      : null;
+
+  return sampleProducts
+    .filter((p) => {
+      const matchQuery =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        (p.brand && p.brand.toLowerCase().includes(q)) ||
+        (p.category && p.category.toLowerCase().includes(q)) ||
+        (p.description && p.description.toLowerCase().includes(q));
+      const matchCategory =
+        !productCategories ||
+        (p.category && productCategories.includes(p.category));
+      return matchQuery && matchCategory;
+    })
+    .map(toListItem);
+}
+
 /** Deal of the day: products with discount + originalPrice, stock, sold for UI */
 export type DealProduct = ProductListItem & {
   originalPrice: number;

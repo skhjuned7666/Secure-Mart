@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -8,7 +8,6 @@ import {
   User,
   Menu,
   X,
-  ChevronDown,
   MapPin,
   Bell,
   Package,
@@ -16,47 +15,32 @@ import {
 } from "lucide-react";
 import { getCartCount, CART_UPDATE_EVENT } from "@/lib/cartStorage";
 import { getWishlistCount, WISHLIST_UPDATE_EVENT } from "@/lib/wishlistStorage";
+import {
+  getDeliveryPincode,
+  setDeliveryPincode,
+  DELIVERY_UPDATE_EVENT,
+} from "@/lib/deliveryStorage";
+import SearchBar from "@/components/SearchBar";
 
 const navLinks = [
-  { label: "Electronics", href: "/" },
-  { label: "Fashion", href: "/" },
-  { label: "Home & Living", href: "/" },
-  { label: "Beauty", href: "/" },
-  { label: "Grocery", href: "/" },
-  { label: "Sports", href: "/" },
-  { label: "Toys", href: "/" },
-  { label: "Books", href: "/" },
-];
-
-const searchSuggestions = [
-  "iPhone 15 Pro Max",
-  "Samsung Galaxy S24",
-  "Nike Air Max",
-  "Wireless Earbuds",
-  "Smart Watch",
-  "Laptop",
-  "Running Shoes",
-  "Summer Dress",
+  { label: "Electronics", href: "/search?category=Electronics" },
+  { label: "Fashion", href: "/search?category=Fashion" },
+  { label: "Home & Living", href: "/search?category=Home%20%26%20Living" },
+  { label: "Beauty", href: "/search?category=Beauty" },
+  { label: "Grocery", href: "/search?category=Grocery" },
+  { label: "Sports", href: "/search?category=Sports" },
+  { label: "Toys", href: "/search?category=Toys" },
+  { label: "Books", href: "/search?category=Books" },
 ];
 
 export default function Navbar() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [deliveryPincode, setDeliveryPincodeState] = useState("110001");
+  const [deliverModalOpen, setDeliverModalOpen] = useState(false);
+  const [pincodeInput, setPincodeInput] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setShowSuggestions(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   useEffect(() => {
     // Initialize cart count from localStorage
@@ -76,25 +60,35 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Initialize wishlist count from localStorage
     setWishlistCount(getWishlistCount());
-
     function handleWishlistUpdate() {
       setWishlistCount(getWishlistCount());
     }
-
     window.addEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
     window.addEventListener("storage", handleWishlistUpdate);
-
     return () => {
       window.removeEventListener(WISHLIST_UPDATE_EVENT, handleWishlistUpdate);
       window.removeEventListener("storage", handleWishlistUpdate);
     };
   }, []);
 
-  const filtered = searchSuggestions.filter((s) =>
-    s.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    setDeliveryPincodeState(getDeliveryPincode());
+    function handleDeliveryUpdate() {
+      setDeliveryPincodeState(getDeliveryPincode());
+    }
+    window.addEventListener(DELIVERY_UPDATE_EVENT, handleDeliveryUpdate);
+    return () => window.removeEventListener(DELIVERY_UPDATE_EVENT, handleDeliveryUpdate);
+  }, []);
+
+  const handleUpdatePincode = () => {
+    const trimmed = pincodeInput.trim();
+    if (trimmed.length >= 4) {
+      setDeliveryPincode(trimmed);
+      setDeliverModalOpen(false);
+      setPincodeInput("");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 shadow-lg">
@@ -113,68 +107,36 @@ export default function Navbar() {
           </Link>
 
           {/* Deliver To */}
-          <div className="hidden lg:flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition-colors flex-shrink-0">
-            <MapPin size={16} className="text-gray-300" />
+          <button
+            type="button"
+            onClick={() => setDeliverModalOpen(true)}
+            className="hidden lg:flex items-center gap-1 cursor-pointer hover:text-yellow-400 transition-colors flex-shrink-0 text-left"
+          >
+            <MapPin size={16} className="text-gray-300 flex-shrink-0" />
             <div className="flex flex-col leading-none">
               <span className="text-gray-400 text-xs">Deliver to</span>
-              <span className="font-semibold text-sm">India 110001</span>
+              <span className="font-semibold text-sm">India {deliveryPincode}</span>
             </div>
-          </div>
+          </button>
 
           {/* Search Bar */}
-          <div ref={searchRef} className="flex-1 relative min-w-0">
-            <div className="flex rounded-lg overflow-hidden border-2 border-transparent focus-within:border-yellow-400 transition-all shadow-sm">
-              <select className="bg-gray-200 text-gray-700 text-xs px-2 py-2.5 border-r border-gray-300 cursor-pointer focus:outline-none hidden sm:block">
-                <option>All</option>
-                <option>Electronics</option>
-                <option>Fashion</option>
-                <option>Home</option>
-                <option>Books</option>
-              </select>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setShowSuggestions(true);
-                }}
-                onFocus={() => setShowSuggestions(true)}
-                placeholder="Search for products, brands and more..."
-                className="flex-1 bg-white text-gray-800 px-4 py-2.5 text-sm focus:outline-none placeholder:text-gray-400"
-              />
-              <button className="bg-yellow-400 hover:bg-yellow-300 px-4 py-2.5 transition-colors">
-                <Search size={18} className="text-gray-800" />
-              </button>
-            </div>
-
-            {/* Suggestions Dropdown */}
-            {showSuggestions && searchQuery && (
-              <div className="absolute top-full left-0 right-0 bg-white rounded-b-lg shadow-2xl z-50 border border-gray-100 overflow-hidden">
-                {filtered.length > 0 ? (
-                  filtered.map((item, i) => (
-                    <div
-                      key={i}
-                      onClick={() => { setSearchQuery(item); setShowSuggestions(false); }}
-                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-gray-700 text-sm border-b border-gray-50 last:border-0"
-                    >
-                      <Search size={13} className="text-gray-400 flex-shrink-0" />
-                      {item}
-                    </div>
-                  ))
-                ) : (
-                  <div className="px-4 py-3 text-gray-400 text-sm">No results found</div>
-                )}
-              </div>
-            )}
-          </div>
+          <SearchBar className="flex-1 min-w-0" />
 
           {/* Right Actions */}
           <div className="flex items-center gap-0.5 lg:gap-2 flex-shrink-0">
             {/* Notifications */}
-            <button className="hidden lg:flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors relative">
-              <Bell size={20} />
-              <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">2</span>
-            </button>
+            <Link
+              href="/notifications"
+              className="hidden lg:flex flex-col items-center p-1.5 hover:text-yellow-400 transition-colors"
+            >
+              <span className="relative">
+                <Bell size={20} />
+                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                  2
+                </span>
+              </span>
+              <span className="text-xs mt-0.5">Notifications</span>
+            </Link>
 
             {/* Wishlist */}
             <Link
@@ -205,10 +167,13 @@ export default function Navbar() {
             </Link>
 
             {/* Account */}
-            <button className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap">
+            <Link
+              href="/login"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
+            >
               <LogIn size={16} />
               Sign In
-            </button>
+            </Link>
 
             {/* Mobile Menu */}
             <button
@@ -265,7 +230,9 @@ export default function Navbar() {
               </div>
               <div>
                 <div className="font-semibold text-sm">Welcome back!</div>
-                <button className="text-yellow-400 text-xs hover:underline">Sign In or Create Account</button>
+                <Link href="/login" className="text-yellow-400 text-xs hover:underline" onClick={() => setMobileMenuOpen(false)}>
+                  Sign In or Create Account
+                </Link>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -280,13 +247,58 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4 text-sm">
+            <div className="mt-4 pt-4 border-t border-gray-700 flex flex-wrap items-center gap-4 text-sm">
+              <Link href="/notifications" className="flex items-center gap-2 hover:text-yellow-400" onClick={() => setMobileMenuOpen(false)}>
+                <Bell size={16} /> Notifications
+              </Link>
               <Link href="/" className="flex items-center gap-2 hover:text-yellow-400">
                 <Package size={16} /> Orders
               </Link>
               <Link href="/wishlist" className="flex items-center gap-2 hover:text-yellow-400">
                 <Heart size={16} /> Wishlist ({wishlistCount})
               </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Deliver To modal */}
+      {deliverModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50"
+          onClick={() => setDeliverModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Update delivery location</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Enter your pincode to see delivery options and availability.
+            </p>
+            <input
+              type="text"
+              value={pincodeInput}
+              onChange={(e) => setPincodeInput(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              placeholder="e.g. 110001"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 mb-4"
+              maxLength={6}
+            />
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleUpdatePincode}
+                className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                onClick={() => { setDeliverModalOpen(false); setPincodeInput(""); }}
+                className="px-4 py-2.5 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
