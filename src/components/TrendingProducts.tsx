@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, Star, ShoppingCart, Eye, Zap, ArrowRight } from "lucide-react";
 
 const products = [
@@ -16,7 +17,7 @@ const products = [
     reviews: 12840,
     badge: "TRENDING",
     badgeColor: "bg-orange-500",
-    emoji: "📱",
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80",
     tags: ["5G", "200MP Camera"],
     freeDelivery: true,
     inStock: true,
@@ -33,7 +34,7 @@ const products = [
     reviews: 8730,
     badge: "BESTSELLER",
     badgeColor: "bg-green-500",
-    emoji: "💻",
+    image: "https://plus.unsplash.com/premium_photo-1681666713728-9ed75e148617?w=600&auto=format&fit=crop&q=60",
     tags: ["M3 Chip", "18hr Battery"],
     freeDelivery: true,
     inStock: true,
@@ -50,7 +51,7 @@ const products = [
     reviews: 23100,
     badge: "HOT DEAL",
     badgeColor: "bg-red-500",
-    emoji: "🎧",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80",
     tags: ["ANC", "30hr Battery"],
     freeDelivery: true,
     inStock: true,
@@ -67,7 +68,7 @@ const products = [
     reviews: 9200,
     badge: "NEW",
     badgeColor: "bg-blue-500",
-    emoji: "👟",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
     tags: ["Air Cushion", "Lightweight"],
     freeDelivery: false,
     inStock: true,
@@ -84,7 +85,7 @@ const products = [
     reviews: 31500,
     badge: "BESTSELLER",
     badgeColor: "bg-green-500",
-    emoji: "🍲",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
     tags: ["7-in-1", "6L Capacity"],
     freeDelivery: true,
     inStock: true,
@@ -101,7 +102,7 @@ const products = [
     reviews: 5400,
     badge: "PREMIUM",
     badgeColor: "bg-purple-500",
-    emoji: "🧹",
+    image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600&q=80",
     tags: ["HEPA Filter", "60min Battery"],
     freeDelivery: true,
     inStock: true,
@@ -118,7 +119,7 @@ const products = [
     reviews: 3800,
     badge: "TOP RATED",
     badgeColor: "bg-indigo-500",
-    emoji: "📷",
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80",
     tags: ["24.2MP", "4K Video"],
     freeDelivery: true,
     inStock: true,
@@ -135,7 +136,7 @@ const products = [
     reviews: 148200,
     badge: "FLASH DEAL",
     badgeColor: "bg-yellow-500",
-    emoji: "🎵",
+    image: "https://images.unsplash.com/photo-1598331668826-20cecc596b86?w=600&q=80",
     tags: ["42hr Playtime", "IPX4"],
     freeDelivery: false,
     inStock: true,
@@ -177,12 +178,16 @@ function ProductCard({ product }: { product: typeof products[0] }) {
         <Heart size={14} fill={wishlisted ? "white" : "none"} />
       </button>
 
-      {/* Image Area */}
-      <div className="relative h-48 sm:h-52 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
-        <div className="text-7xl sm:text-8xl group-hover:scale-110 transition-transform duration-500 filter drop-shadow-lg">
-          {product.emoji}
-        </div>
-        {/* Quick View Overlay - click goes to PDP via parent Link */}
+      {/* Image Area - image covers full card area */}
+      <div className="relative aspect-square bg-gray-100 overflow-hidden">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-cover  transition-transform duration-500"
+        />
+        {/* Quick View Overlay */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 pointer-events-none">
           <span className="bg-white text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow flex items-center gap-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
             <Eye size={12} /> Quick View
