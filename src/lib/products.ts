@@ -452,3 +452,34 @@ export async function getFeaturedProducts(limit = 6): Promise<ProductListItem[]>
   await new Promise((r) => setTimeout(r, 50));
   return sampleProducts.slice(0, limit).map(toListItem);
 }
+
+/** Deal of the day: products with discount + originalPrice, stock, sold for UI */
+export type DealProduct = ProductListItem & {
+  originalPrice: number;
+  stock: number;
+  sold: number;
+};
+
+export async function getDealOfTheDayProducts(
+  limit = 8
+): Promise<DealProduct[]> {
+  await new Promise((r) => setTimeout(r, 50));
+  return sampleProducts
+    .filter((p) => p.discount > 0)
+    .slice(0, limit)
+    .map((p) => {
+      const list = toListItem(p);
+      const stock = p.stock ?? 100;
+      const idNum = p.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+      const sold = Math.min(
+        stock - 1,
+        Math.floor(stock * (0.55 + (idNum % 5) * 0.08))
+      );
+      return {
+        ...list,
+        originalPrice: p.originalPrice ?? Math.round(p.price / (1 - p.discount / 100)),
+        stock,
+        sold,
+      };
+    });
+}
