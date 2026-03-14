@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const slides = [
   {
@@ -16,6 +17,7 @@ const slides = [
     accentColor: "from-yellow-400 to-orange-500",
     textAccent: "text-yellow-400",
     emoji: "📱",
+    imageUrl: "https://images.unsplash.com/photo-1529338296731-c4280a44fc48?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGVsZWN0cm9uaWN8ZW58MHx8MHx8fDA%3D",
     stats: ["50K+ Products", "Top Brands", "24hr Delivery"],
     badge2: "Starts ₹999",
   },
@@ -32,6 +34,7 @@ const slides = [
     accentColor: "from-emerald-400 to-teal-500",
     textAccent: "text-emerald-400",
     emoji: "👗",
+    imageUrl: "https://plus.unsplash.com/premium_photo-1675186049419-d48f4b28fe7c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZmFzaGlvbnxlbnwwfHwwfHx8MA%3D%3D",
     stats: ["1L+ Styles", "Free Returns", "Try & Buy"],
     badge2: "New Season",
   },
@@ -48,6 +51,7 @@ const slides = [
     accentColor: "from-pink-400 to-rose-500",
     textAccent: "text-pink-400",
     emoji: "🛋️",
+    imageUrl: "https://images.unsplash.com/photo-1617098709804-705581f844eb?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     stats: ["10K+ Items", "EMI Available", "Easy Install"],
     badge2: "From ₹499",
   },
@@ -64,6 +68,7 @@ const slides = [
     accentColor: "from-cyan-400 to-blue-500",
     textAccent: "text-cyan-400",
     emoji: "🏃",
+    imageUrl: "https://images.unsplash.com/photo-1483721310020-03333e577078?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3BvcnRzJTIwYW5kJTIwZml0bmVzc3xlbnwwfHwwfHx8MA%3D%3D",
     stats: ["Expert Picks", "Pro Gear", "Fast Ship"],
     badge2: "Top Rated",
   },
@@ -168,13 +173,22 @@ export default function HeroBanner() {
                 {/* Glow Effect */}
                 <div className={`absolute inset-0 bg-gradient-to-r ${slide.accentColor} rounded-full blur-3xl opacity-30 scale-110`} />
 
-                {/* Emoji Display */}
-                <div className="relative text-[120px] sm:text-[160px] lg:text-[200px] leading-none filter drop-shadow-2xl select-none">
-                  {slide.emoji}
+                {/* Image Display */}
+                <div className="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[450px] lg:h-[450px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
+                  <Image
+                    src={slide.imageUrl}
+                    alt={slide.headline}
+                    fill
+                    className="object-cover"
+                    priority={current === 0}
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 360px, 450px"
+                  />
+                  {/* Overlay gradient for better text readability */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${slide.gradient} opacity-20`} />
                 </div>
 
                 {/* Price Badge */}
-                <div className={`absolute -top-2 -right-2 bg-gradient-to-r ${slide.accentColor} text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg`}>
+                <div className={`absolute -top-2 -right-2 bg-gradient-to-r ${slide.accentColor} text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg z-10`}>
                   {slide.badge2}
                 </div>
               </div>
