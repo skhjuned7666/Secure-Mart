@@ -1,77 +1,113 @@
 "use client";
-import { useState } from "react";
-import { Star, Heart, ShoppingCart, ArrowRight, TrendingUp, Sparkles } from "lucide-react";
+import { useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const bestSellers = [
-  { id: 1, name: "Noise ColorFit Pro 5 Smart Watch", price: 2499, originalPrice: 4999, discount: 50, rating: 4.4, reviews: 89200, emoji: "⌚", badge: "#1 Bestseller" },
-  { id: 2, name: "Himalaya Face Wash Neem 150ml", price: 149, originalPrice: 220, discount: 32, rating: 4.6, reviews: 245000, emoji: "🧴", badge: "Daily Essential" },
-  { id: 3, name: "Casio Vintage A168 Watch", price: 1695, originalPrice: 2495, discount: 32, rating: 4.7, reviews: 56000, emoji: "🕰️", badge: "Classic Pick" },
-  { id: 4, name: "Amul Butter 500g", price: 265, originalPrice: 295, discount: 10, rating: 4.8, reviews: 180000, emoji: "🧈", badge: "Fresh Daily" },
-  { id: 5, name: "Philips Air Fryer HD9200", price: 5299, originalPrice: 7999, discount: 34, rating: 4.5, reviews: 42000, emoji: "🍟", badge: "Top Kitchen" },
-  { id: 6, name: "Prestige Induction Cooktop", price: 1599, originalPrice: 2599, discount: 38, rating: 4.3, reviews: 67000, emoji: "🔥", badge: "Most Bought" },
+  { id: 1, name: "Noise ColorFit Pro 5 Smart Watch", price: 2499, originalPrice: 4999, discount: 50, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" },
+  { id: 2, name: "Himalaya Face Wash Neem 150ml", price: 149, originalPrice: 220, discount: 32, image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&q=80" },
+  { id: 3, name: "Casio Vintage A168 Watch", price: 1695, originalPrice: 2495, discount: 32, image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&q=80" },
+  { id: 4, name: "Amul Butter 500g", price: 265, originalPrice: 295, discount: 10, image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80" },
+  { id: 5, name: "Philips Air Fryer HD9200", price: 5299, originalPrice: 7999, discount: 34, image: "https://images.unsplash.com/photo-1585303526118-0c2e0e1d8a2f?w=400&q=80" },
+  { id: 6, name: "Prestige Induction Cooktop", price: 1599, originalPrice: 2599, discount: 38, image: "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400&q=80" },
 ];
 
 const newArrivals = [
-  { id: 7, name: "OnePlus 12R 5G 8GB 256GB", price: 29999, originalPrice: 34999, discount: 14, rating: 4.6, reviews: 12400, emoji: "📲", badge: "Just Launched" },
-  { id: 8, name: "Zara Floral Maxi Dress", price: 2990, originalPrice: 4990, discount: 40, rating: 4.4, reviews: 3200, emoji: "👗", badge: "New Season" },
-  { id: 9, name: "boAt Rockerz 550 Headphones", price: 1299, originalPrice: 3990, discount: 67, rating: 4.2, reviews: 94000, emoji: "🎧", badge: "New Model" },
-  { id: 10, name: "Himalayan Serenity Yoga Mat", price: 1499, originalPrice: 2499, discount: 40, rating: 4.7, reviews: 8700, emoji: "🧘", badge: "New Launch" },
-  { id: 11, name: "JBL Flip 6 Bluetooth Speaker", price: 8999, originalPrice: 14999, discount: 40, rating: 4.8, reviews: 31000, emoji: "🔊", badge: "Fresh Arrival" },
-  { id: 12, name: "Adidas Ultraboost 23 Running", price: 11999, originalPrice: 18999, discount: 37, rating: 4.6, reviews: 7800, emoji: "👟", badge: "New Design" },
+  { id: 7, name: "OnePlus 12R 5G 8GB 256GB", price: 29999, originalPrice: 34999, discount: 14, image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&q=80" },
+  { id: 8, name: "Zara Floral Maxi Dress", price: 2990, originalPrice: 4990, discount: 40, image: "https://images.unsplash.com/photo-1595777457583-95e059d58199?w=400&q=80" },
+  { id: 9, name: "boAt Rockerz 550 Headphones", price: 1299, originalPrice: 3990, discount: 67, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" },
+  { id: 10, name: "Himalayan Serenity Yoga Mat", price: 1499, originalPrice: 2499, discount: 40, image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&q=80" },
+  { id: 11, name: "JBL Flip 6 Bluetooth Speaker", price: 8999, originalPrice: 14999, discount: 40, image: "https://images.unsplash.com/photo-1545454670-ea1d4c2e0b6e?w=400&q=80" },
+  { id: 12, name: "Adidas Ultraboost 23 Running", price: 11999, originalPrice: 18999, discount: 37, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" },
 ];
 
 type Product = typeof bestSellers[0];
 
-function MiniProductCard({ product }: { product: Product }) {
-  const [wishlisted, setWishlisted] = useState(false);
-  const [added, setAdded] = useState(false);
+function CarouselCard({ product, href }: { product: Product; href: string }) {
+  return (
+    <Link href={href} className="group flex-shrink-0 w-[160px] sm:w-[180px] block">
+      <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-2 shadow-sm group-hover:shadow-md transition-shadow">
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={180}
+          height={180}
+          sizes="(max-width: 640px) 160px, 180px"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <p className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-orange-600 transition-colors">
+        {product.name}
+      </p>
+      <p className="text-sm font-bold text-gray-900 mt-0.5">₹{product.price.toLocaleString("en-IN")}</p>
+    </Link>
+  );
+}
+
+function CarouselSection({
+  title,
+  subtitle,
+  pipeText,
+  products,
+  seeAllHref,
+}: {
+  title: string;
+  subtitle: string;
+  pipeText: string;
+  products: Product[];
+  seeAllHref: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const step = 200;
+    scrollRef.current.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  };
 
   return (
-    <div className="group flex items-center gap-3 p-3 rounded-xl hover:bg-orange-50 transition-all border border-transparent hover:border-orange-100 cursor-pointer">
-      {/* Emoji Thumbnail */}
-      <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-105 transition-transform shadow-sm">
-        {product.emoji}
+    <div className="bg-gray-100 rounded-xl overflow-hidden">
+      {/* Header - image 2 style: bold black text + See all on right */}
+      <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5">
+        <h2 className="text-gray-900 font-bold text-base sm:text-lg">
+          {title} | {subtitle} | {pipeText}
+        </h2>
+        <Link
+          href={seeAllHref}
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium whitespace-nowrap ml-2"
+        >
+          See all
+        </Link>
       </div>
 
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <div className="text-xs text-orange-500 font-bold mb-0.5">{product.badge}</div>
-        <div className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-orange-600 transition-colors leading-tight">
-          {product.name}
-        </div>
-        <div className="flex items-center gap-1.5 mt-1">
-          <div className="flex items-center gap-0.5 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded font-bold">
-            {product.rating} <Star size={9} fill="white" />
-          </div>
-          <span className="text-xs text-gray-400">({(product.reviews / 1000).toFixed(0)}K)</span>
-        </div>
-        <div className="flex items-baseline gap-1.5 mt-1">
-          <span className="text-sm font-black text-gray-900">₹{product.price.toLocaleString('en-IN')}</span>
-          <span className="text-xs text-gray-400 line-through">₹{product.originalPrice.toLocaleString('en-IN')}</span>
-          <span className="text-xs text-green-600 font-bold">{product.discount}% off</span>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex flex-col gap-1.5">
+      {/* Horizontal carousel with arrows */}
+      <div className="relative">
         <button
-          onClick={(e) => { e.stopPropagation(); setWishlisted(!wishlisted); }}
-          className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all
-            ${wishlisted ? "bg-red-500 border-red-500 text-white" : "border-gray-200 text-gray-400 hover:border-red-300 hover:text-red-400"}`}
+          type="button"
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-gray-900 transition-all -ml-2"
+          aria-label="Previous"
         >
-          <Heart size={13} fill={wishlisted ? "white" : "none"} />
+          <ChevronLeft size={20} />
         </button>
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setAdded(true);
-            setTimeout(() => setAdded(false), 1500);
-          }}
-          className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all
-            ${added ? "bg-green-500 border-green-500 text-white" : "border-gray-200 text-gray-500 hover:border-orange-400 hover:text-orange-500"}`}
+          type="button"
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-gray-900 transition-all -mr-2"
+          aria-label="Next"
         >
-          <ShoppingCart size={13} />
+          <ChevronRight size={20} />
         </button>
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-2 sm:px-4 py-4 pb-5"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {products.map((product) => (
+            <CarouselCard key={product.id} product={product} href={`/products/${product.id}`} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -79,110 +115,23 @@ function MiniProductCard({ product }: { product: Product }) {
 
 export default function FeaturedCollections() {
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-10 sm:py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-          {/* Best Sellers */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-orange-500 to-red-500">
-              <div className="flex items-center gap-2">
-                <TrendingUp size={20} className="text-white" />
-                <div>
-                  <h2 className="text-white font-black text-lg leading-none">Best Sellers</h2>
-                  <p className="text-orange-100 text-xs mt-0.5">Most loved by customers</p>
-                </div>
-              </div>
-              <a href="#" className="flex items-center gap-1 text-white/80 hover:text-white text-xs font-semibold transition-colors group">
-                View All <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            </div>
-
-            {/* Products */}
-            <div className="p-3 divide-y divide-gray-50">
-              {bestSellers.map((product) => (
-                <MiniProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="px-5 pb-4">
-              <button className="w-full py-3 rounded-xl border-2 border-orange-400 text-orange-500 font-bold text-sm hover:bg-orange-500 hover:text-white transition-all">
-                See All Best Sellers →
-              </button>
-            </div>
-          </div>
-
-          {/* New Arrivals */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-violet-600 to-purple-600">
-              <div className="flex items-center gap-2">
-                <Sparkles size={20} className="text-white" />
-                <div>
-                  <h2 className="text-white font-black text-lg leading-none">New Arrivals</h2>
-                  <p className="text-violet-200 text-xs mt-0.5">Fresh drops just for you</p>
-                </div>
-              </div>
-              <a href="#" className="flex items-center gap-1 text-white/80 hover:text-white text-xs font-semibold transition-colors group">
-                View All <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            </div>
-
-            {/* Products */}
-            <div className="p-3 divide-y divide-gray-50">
-              {newArrivals.map((product) => (
-                <MiniProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="px-5 pb-4">
-              <button className="w-full py-3 rounded-xl border-2 border-violet-400 text-violet-600 font-bold text-sm hover:bg-violet-600 hover:text-white transition-all">
-                Explore New Arrivals →
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Banners */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-          {[
-            {
-              title: "Under ₹999",
-              sub: "Budget picks, big value",
-              emoji: "💰",
-              gradient: "from-yellow-400 to-orange-500",
-              cta: "Shop Now",
-            },
-            {
-              title: "Premium Brands",
-              sub: "Apple, Samsung, Nike & more",
-              emoji: "👑",
-              gradient: "from-slate-700 to-slate-900",
-              cta: "Explore",
-            },
-            {
-              title: "EMI Offers",
-              sub: "No cost EMI on 6000+ products",
-              emoji: "💳",
-              gradient: "from-emerald-500 to-teal-600",
-              cta: "Check Offers",
-            },
-          ].map((banner, i) => (
-            <div
-              key={i}
-              className={`bg-gradient-to-r ${banner.gradient} rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:scale-[1.02] hover:shadow-lg transition-all`}
-            >
-              <span className="text-4xl">{banner.emoji}</span>
-              <div className="flex-1">
-                <div className="text-white font-black text-lg">{banner.title}</div>
-                <div className="text-white/70 text-xs">{banner.sub}</div>
-              </div>
-              <button className="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap border border-white/20">
-                {banner.cta} →
-              </button>
-            </div>
-          ))}
+        <div className="space-y-6">
+          <CarouselSection
+            title="Best Sellers"
+            subtitle="Most loved by customers"
+            pipeText="Secure-Mart"
+            products={bestSellers}
+            seeAllHref="/search?category=Best Sellers"
+          />
+          <CarouselSection
+            title="New Arrivals"
+            subtitle="Fresh drops just for you"
+            pipeText="Secure-Mart"
+            products={newArrivals}
+            seeAllHref="/search?category=New Arrivals"
+          />
         </div>
       </div>
     </section>

@@ -12,6 +12,7 @@ import {
   Bell,
   Package,
   LogIn,
+  Flame,
 } from "lucide-react";
 import { getCartCount, CART_UPDATE_EVENT } from "@/lib/cartStorage";
 import { getWishlistCount, WISHLIST_UPDATE_EVENT } from "@/lib/wishlistStorage";
@@ -210,10 +211,11 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                href="/"
+                href="/search"
                 className="flex items-center gap-1 px-3.5 py-3 text-sm font-bold text-red-400 hover:text-red-300 transition-colors whitespace-nowrap"
               >
-                🔥 Sale
+                <Flame size={16} className="flex-shrink-0" />
+                Sale
               </Link>
             </div>
           </nav>

@@ -5,7 +5,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
-export const SEARCH_CATEGORIES = ["All", "Electronics", "Fashion", "Home", "Books"];
+export const SEARCH_CATEGORIES = [
+  "All",
+  "Electronics",
+  "Fashion",
+  "Home & Living",
+  "Beauty",
+  "Grocery",
+  "Sports",
+  "Toys",
+  "Books",
+];
 
 const SEARCH_SUGGESTIONS = [
   "iPhone 15 Pro Max",

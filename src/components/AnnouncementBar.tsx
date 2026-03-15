@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, PartyPopper, Truck, CreditCard, Gift } from "lucide-react";
 
 const announcements = [
-  "🎉 MEGA SALE: Up to 70% off on Electronics! Limited time offer.",
-  "🚚 FREE Delivery on orders above ₹499. Shop Now!",
-  "💳 Extra 10% cashback on all UPI payments. Use code: UPIBACK10",
-  "🎁 Buy 2 Get 1 Free on Fashion & Accessories. Today Only!",
+  { Icon: PartyPopper, text: "MEGA SALE: Up to 70% off on Electronics! Limited time offer." },
+  { Icon: Truck, text: "FREE Delivery on orders above ₹499. Shop Now!" },
+  { Icon: CreditCard, text: "Extra 10% cashback on all UPI payments. Use code: UPIBACK10" },
+  { Icon: Gift, text: "Buy 2 Get 1 Free on Fashion & Accessories. Today Only!" },
 ];
 
 export default function AnnouncementBar() {
@@ -31,8 +31,16 @@ export default function AnnouncementBar() {
         >
           <ChevronLeft size={14} />
         </button>
-        <div className="flex-1 text-center font-medium tracking-wide text-yellow-300 text-xs sm:text-sm animate-pulse-slow">
-          {announcements[current]}
+        <div className="flex-1 flex items-center justify-center gap-2 font-medium tracking-wide text-yellow-300 text-xs sm:text-sm animate-pulse-slow">
+          {(() => {
+            const { Icon, text } = announcements[current];
+            return (
+              <>
+                <Icon size={16} className="flex-shrink-0" />
+                <span>{text}</span>
+              </>
+            );
+          })()}
         </div>
         <div className="flex items-center gap-2">
           <button

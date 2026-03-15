@@ -1,5 +1,5 @@
 "use client";
-import { ShieldCheck, Truck, RotateCcw, Headphones, Award, Lock } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Headphones, Award, Lock, Smile, Package, CheckCircle, Star, CreditCard, Smartphone, Landmark, IndianRupee, Banknote } from "lucide-react";
 
 const trustFeatures = [
   {
@@ -58,7 +58,14 @@ const trustFeatures = [
   },
 ];
 
-const paymentMethods = ["💳 Visa", "💳 Mastercard", "📱 UPI", "🏦 Net Banking", "💰 EMI", "₹ Cash on Delivery"];
+const paymentMethods: { label: string; Icon: typeof CreditCard }[] = [
+  { label: "Visa", Icon: CreditCard },
+  { label: "Mastercard", Icon: CreditCard },
+  { label: "UPI", Icon: Smartphone },
+  { label: "Net Banking", Icon: Landmark },
+  { label: "EMI", Icon: IndianRupee },
+  { label: "₹ Cash on Delivery", Icon: Banknote },
+];
 
 export default function TrustSection() {
   return (
@@ -104,39 +111,53 @@ export default function TrustSection() {
           })}
         </div>
 
-        {/* Stats Bar */}
-        <div className="bg-gradient-to-r from-[#131921] via-[#1e2a3a] to-[#131921] rounded-2xl p-6 sm:p-8 mb-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-            {[
-              { value: "5M+", label: "Happy Customers", emoji: "😊" },
-              { value: "2M+", label: "Products Listed", emoji: "📦" },
-              { value: "99.8%", label: "Delivery Success", emoji: "✅" },
-              { value: "4.8★", label: "Average Rating", emoji: "⭐" },
-            ].map((stat, i) => (
-              <div key={i} className="text-white">
-                <div className="text-2xl mb-1">{stat.emoji}</div>
-                <div className="text-2xl sm:text-3xl font-black text-yellow-400">{stat.value}</div>
-                <div className="text-gray-300 text-xs sm:text-sm mt-1">{stat.label}</div>
+        {/* Stats – unique separate tiles (no single card) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
+          {[
+            { value: "5M+", label: "Happy Customers", Icon: Smile, bar: "bg-amber-500" },
+            { value: "2M+", label: "Products Listed", Icon: Package, bar: "bg-blue-500" },
+            { value: "99.8%", label: "Delivery Success", Icon: CheckCircle, bar: "bg-emerald-500" },
+            { value: "4.8★", label: "Average Rating", Icon: Star, bar: "bg-yellow-500" },
+          ].map((stat, i) => {
+            const StatIcon = stat.Icon;
+            return (
+              <div
+                key={i}
+                className="group relative bg-white rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              >
+                <div className={`absolute top-0 left-0 right-0 h-1 ${stat.bar}`} />
+                <div className="flex items-start gap-3">
+                  <StatIcon className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 text-gray-600" strokeWidth={1.5} />
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-black text-gray-900">{stat.value}</div>
+                    <div className="text-gray-500 text-sm font-medium mt-0.5">{stat.label}</div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
         {/* Payment Methods */}
         <div className="text-center">
           <div className="text-sm font-semibold text-gray-500 mb-3">Accepted Payment Methods</div>
           <div className="flex flex-wrap justify-center gap-2.5">
-            {paymentMethods.map((method, i) => (
-              <span
-                key={i}
-                className="text-xs bg-gray-50 border border-gray-200 text-gray-700 font-medium px-3.5 py-2 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all cursor-default"
-              >
-                {method}
-              </span>
-            ))}
+            {paymentMethods.map((method, i) => {
+              const MethodIcon = method.Icon;
+              return (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 text-xs bg-gray-50 border border-gray-200 text-gray-700 font-medium px-3.5 py-2 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all cursor-default"
+                >
+                  <MethodIcon size={14} className="flex-shrink-0 text-gray-500" />
+                  {method.label}
+                </span>
+              );
+            })}
           </div>
-          <p className="text-xs text-gray-400 mt-3">
-            🔒 All transactions are 256-bit SSL encrypted and PCI DSS compliant
+          <p className="text-xs text-gray-400 mt-3 inline-flex items-center gap-1.5 justify-center">
+            <Lock size={12} className="flex-shrink-0" />
+            All transactions are 256-bit SSL encrypted and PCI DSS compliant
           </p>
         </div>
       </div>

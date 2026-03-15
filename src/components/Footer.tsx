@@ -1,5 +1,5 @@
 "use client";
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Linkedin, ChevronUp } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Linkedin, ChevronUp, Apple, Play, Lock, CheckCircle, Trophy, Star, Leaf } from "lucide-react";
 import { useState } from "react";
 
 const footerLinks = {
@@ -31,7 +31,10 @@ export default function Footer() {
       <div className="bg-gradient-to-r from-orange-600 via-orange-500 to-yellow-500">
         <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="text-center sm:text-left">
-            <h3 className="text-white font-black text-xl">Stay in the Loop! 📧</h3>
+            <h3 className="text-white font-black text-xl flex items-center gap-2">
+              Stay in the Loop!
+              <Mail size={20} className="flex-shrink-0" />
+            </h3>
             <p className="text-orange-100 text-sm mt-0.5">Subscribe for exclusive deals, new arrivals & special offers.</p>
           </div>
           <form onSubmit={handleSubscribe} className="flex w-full sm:w-auto gap-0 max-w-md">
@@ -67,14 +70,14 @@ export default function Footer() {
           </div>
           <div className="flex gap-3">
             <button className="flex items-center gap-2 bg-black border border-gray-600 hover:border-gray-400 px-4 py-2 rounded-xl transition-colors">
-              <span className="text-xl">🍎</span>
+              <Apple size={24} className="text-white flex-shrink-0" />
               <div className="text-left">
                 <div className="text-gray-400 text-xs leading-none">Download on the</div>
                 <div className="text-white text-xs font-bold">App Store</div>
               </div>
             </button>
             <button className="flex items-center gap-2 bg-black border border-gray-600 hover:border-gray-400 px-4 py-2 rounded-xl transition-colors">
-              <span className="text-xl">▶️</span>
+              <Play size={24} className="text-white flex-shrink-0" />
               <div className="text-left">
                 <div className="text-gray-400 text-xs leading-none">Get it on</div>
                 <div className="text-white text-xs font-bold">Google Play</div>
@@ -198,11 +201,21 @@ export default function Footer() {
       <div className="border-t border-gray-700/50">
         <div className="max-w-7xl mx-auto px-4 py-5">
           <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-4">
-            {["🔒 SSL Secured", "✅ ISO 27001 Certified", "🏆 Top E-commerce 2024", "⭐ Trusted by 5M+ Users", "🌿 Carbon Neutral Shipping"].map((badge, i) => (
-              <span key={i} className="text-xs text-gray-500 bg-gray-800 px-3 py-1.5 rounded-full border border-gray-700">
-                {badge}
-              </span>
-            ))}
+            {[
+              { Icon: Lock, label: "SSL Secured" },
+              { Icon: CheckCircle, label: "ISO 27001 Certified" },
+              { Icon: Trophy, label: "Top E-commerce 2024" },
+              { Icon: Star, label: "Trusted by 5M+ Users" },
+              { Icon: Leaf, label: "Carbon Neutral Shipping" },
+            ].map((badge, i) => {
+              const BadgeIcon = badge.Icon;
+              return (
+                <span key={i} className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-800 px-3 py-1.5 rounded-full border border-gray-700">
+                  <BadgeIcon size={12} className="flex-shrink-0 text-gray-400" />
+                  {badge.label}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

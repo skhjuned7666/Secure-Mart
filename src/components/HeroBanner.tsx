@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Zap, Star } from "lucide-react";
 import Image from "next/image";
 
 // Banner Slides Data
@@ -90,7 +90,7 @@ const categoryCards = [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=60",
       "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=200&auto=format&fit=crop&q=60",
     ],
-    link: "#electronics",
+    link: "#product-cards",
   },
   {
     id: 2,
@@ -101,7 +101,7 @@ const categoryCards = [
       "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200&auto=format&fit=crop&q=60",
       "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=200&auto=format&fit=crop&q=60",
     ],
-    link: "#fashion",
+    link: "#product-cards",
   },
   {
     id: 3,
@@ -112,7 +112,7 @@ const categoryCards = [
       "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200&auto=format&fit=crop&q=60",
       "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=200&auto=format&fit=crop&q=60",
     ],
-    link: "#footwear",
+    link: "#product-cards",
   },
   {
     id: 4,
@@ -123,14 +123,17 @@ const categoryCards = [
       "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=200&auto=format&fit=crop&q=60",
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&auto=format&fit=crop&q=60",
     ],
-    link: "#homedecor",
+    link: "#product-cards",
   },
 ];
 
-// Category Card Component
+// Category Card Component - whole card scrolls to product section
 function CategoryCard({ category }: { category: (typeof categoryCards)[0] }) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+    <a
+      href={category.link}
+      className="block bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer"
+    >
       <div className="p-3">
         <h3 className="text-sm font-bold text-gray-800 mb-2">
           {category.title}
@@ -151,15 +154,12 @@ function CategoryCard({ category }: { category: (typeof categoryCards)[0] }) {
             </div>
           ))}
         </div>
-        <a
-          href={category.link}
-          className="text-xs text-blue-600 font-semibold flex items-center gap-1"
-        >
+        <span className="text-xs text-blue-600 font-semibold flex items-center gap-1">
           See more
           <ArrowRight size={12} />
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -224,8 +224,9 @@ function BannerSlide({
                 >
                   {slide.badge}
                 </span>
-                <span className="bg-white/10 backdrop-blur text-white text-xs px-2.5 py-1 rounded-full border border-white/20">
-                  ⚡ {slide.tag}
+                <span className="bg-white/10 backdrop-blur text-white text-xs px-2.5 py-1 rounded-full border border-white/20 inline-flex items-center gap-1">
+                  <Zap size={10} className="flex-shrink-0" />
+                  {slide.tag}
                 </span>
               </div>
 
@@ -354,11 +355,17 @@ export default function HeroBanner() {
             .map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col shrink-0 text-center"
+                className="flex flex-col shrink-0 text-center items-center"
                 aria-hidden={i >= 4}
               >
-                <span className="text-xs font-bold text-gray-800 whitespace-nowrap">
-                  {item.text}
+                <span className="text-xs font-bold text-gray-800 whitespace-nowrap inline-flex items-center gap-0.5 justify-center">
+                  {item.text === "5★ Reviews" ? (
+                    <>
+                      5 <Star size={10} fill="currentColor" className="inline-block" /> Reviews
+                    </>
+                  ) : (
+                    item.text
+                  )}
                 </span>
                 <span className="text-xs text-gray-500 whitespace-nowrap">
                   {item.sub}
