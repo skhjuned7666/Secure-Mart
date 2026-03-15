@@ -1,6 +1,31 @@
 import type { Product, ProductListItem, Review } from "@/types/product";
 
-const PLACEHOLDER_IMG = "https://picsum.photos/400/400";
+/** Shared Unsplash base URLs used on home (TrendingProducts) for image consistency across app */
+const UNSPLASH = {
+  smartphone:
+    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+  laptop:
+    "https://plus.unsplash.com/premium_photo-1681666713728-9ed75e148617",
+  headphones:
+    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+  sneakers:
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+  pressureCooker:
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136",
+  vacuum:
+    "https://images.unsplash.com/photo-1558317374-067fb5f30001",
+  camera:
+    "https://images.unsplash.com/photo-1516035069371-29a1b244cc32",
+  earbuds:
+    "https://images.unsplash.com/photo-1598331668826-20cecc596b86",
+  monitor:
+    "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf",
+  runningShoes:
+    "https://images.unsplash.com/photo-1608231387042-66d1773070a5",
+} as const;
+
+const img = (base: string, w = 600) =>
+  `${base}?w=${w}&auto=format&fit=crop&q=80`;
 
 const sampleProducts: Product[] = [
   {
@@ -13,11 +38,9 @@ const sampleProducts: Product[] = [
     rating: 4.7,
     reviewsCount: 12840,
     images: [
-      `${PLACEHOLDER_IMG}?random=1`,
-      `${PLACEHOLDER_IMG}?random=2`,
-      `${PLACEHOLDER_IMG}?random=3`,
-      `${PLACEHOLDER_IMG}?random=4`,
-      `${PLACEHOLDER_IMG}?random=5`,
+      img(UNSPLASH.smartphone, 600),
+      img(UNSPLASH.smartphone, 800),
+      img(UNSPLASH.smartphone, 400),
     ],
     variants: ["128GB", "256GB", "512GB"],
     stock: 150,
@@ -60,9 +83,9 @@ const sampleProducts: Product[] = [
     rating: 4.9,
     reviewsCount: 8730,
     images: [
-      `${PLACEHOLDER_IMG}?random=10`,
-      `${PLACEHOLDER_IMG}?random=11`,
-      `${PLACEHOLDER_IMG}?random=12`,
+      img(UNSPLASH.laptop, 600),
+      img(UNSPLASH.laptop, 800),
+      img(UNSPLASH.laptop, 400),
     ],
     variants: ["8GB/256GB", "8GB/512GB", "16GB/512GB"],
     stock: 85,
@@ -103,9 +126,9 @@ const sampleProducts: Product[] = [
     rating: 4.8,
     reviewsCount: 23100,
     images: [
-      `${PLACEHOLDER_IMG}?random=20`,
-      `${PLACEHOLDER_IMG}?random=21`,
-      `${PLACEHOLDER_IMG}?random=22`,
+      img(UNSPLASH.headphones, 600),
+      img(UNSPLASH.headphones, 800),
+      img(UNSPLASH.headphones, 400),
     ],
     variants: ["Black", "Silver"],
     stock: 200,
@@ -143,8 +166,8 @@ const sampleProducts: Product[] = [
     rating: 4.5,
     reviewsCount: 9200,
     images: [
-      `${PLACEHOLDER_IMG}?random=30`,
-      `${PLACEHOLDER_IMG}?random=31`,
+      img(UNSPLASH.sneakers, 600),
+      img(UNSPLASH.sneakers, 800),
     ],
     variants: ["UK 7", "UK 8", "UK 9", "UK 10", "UK 11"],
     stock: 75,
@@ -180,9 +203,9 @@ const sampleProducts: Product[] = [
     rating: 4.6,
     reviewsCount: 31500,
     images: [
-      `${PLACEHOLDER_IMG}?random=40`,
-      `${PLACEHOLDER_IMG}?random=41`,
-      `${PLACEHOLDER_IMG}?random=42`,
+      img(UNSPLASH.pressureCooker, 600),
+      img(UNSPLASH.pressureCooker, 800),
+      img(UNSPLASH.pressureCooker, 400),
     ],
     variants: ["6L", "8L"],
     stock: 120,
@@ -219,8 +242,8 @@ const sampleProducts: Product[] = [
     rating: 4.8,
     reviewsCount: 5400,
     images: [
-      `${PLACEHOLDER_IMG}?random=50`,
-      `${PLACEHOLDER_IMG}?random=51`,
+      img(UNSPLASH.vacuum, 600),
+      img(UNSPLASH.vacuum, 800),
     ],
     variants: ["Gold", "Nickel"],
     stock: 45,
@@ -257,9 +280,9 @@ const sampleProducts: Product[] = [
     rating: 4.7,
     reviewsCount: 3800,
     images: [
-      `${PLACEHOLDER_IMG}?random=60`,
-      `${PLACEHOLDER_IMG}?random=61`,
-      `${PLACEHOLDER_IMG}?random=62`,
+      img(UNSPLASH.camera, 600),
+      img(UNSPLASH.camera, 800),
+      img(UNSPLASH.camera, 400),
     ],
     variants: ["Body", "With 18-45mm Kit"],
     stock: 60,
@@ -297,8 +320,8 @@ const sampleProducts: Product[] = [
     rating: 4.3,
     reviewsCount: 148200,
     images: [
-      `${PLACEHOLDER_IMG}?random=70`,
-      `${PLACEHOLDER_IMG}?random=71`,
+      img(UNSPLASH.earbuds, 600),
+      img(UNSPLASH.earbuds, 800),
     ],
     variants: ["Black", "Blue", "Green"],
     stock: 500,
@@ -333,7 +356,10 @@ const sampleProducts: Product[] = [
     discount: 24,
     rating: 4.6,
     reviewsCount: 6200,
-    images: [`${PLACEHOLDER_IMG}?random=90`, `${PLACEHOLDER_IMG}?random=91`],
+    images: [
+      img(UNSPLASH.monitor, 600),
+      img(UNSPLASH.monitor, 800),
+    ],
     variants: ["Black"],
     stock: 45,
     brand: "Samsung",
@@ -352,7 +378,10 @@ const sampleProducts: Product[] = [
     discount: 24,
     rating: 4.7,
     reviewsCount: 8400,
-    images: [`${PLACEHOLDER_IMG}?random=100`, `${PLACEHOLDER_IMG}?random=101`],
+    images: [
+      img(UNSPLASH.runningShoes, 600),
+      img(UNSPLASH.runningShoes, 800),
+    ],
     variants: ["Black", "White", "Grey"],
     stock: 120,
     brand: "Adidas",
@@ -386,7 +415,7 @@ const sampleReviews: Review[] = [
     title: "Great but heavy",
     body: "Love the features and performance. Only downside is the weight - it's quite heavy for one-handed use. Otherwise excellent.",
     verifiedPurchase: true,
-    images: [`${PLACEHOLDER_IMG}?random=rev1`],
+    images: [img(UNSPLASH.smartphone, 400)],
     createdAt: "2025-03-08T14:30:00Z",
     helpfulCount: 89,
   },
