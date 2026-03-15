@@ -336,48 +336,35 @@ export default function HeroBanner() {
       {/* Category Cards Overlay */}
       <CategoryCards />
 
-      {/* Mini Banners Below */}
-      <div className="bg-white border-b border-gray-100 w-full">
-        <div className="w-full px-3 sm:px-4 lg:px-6 py-3 grid grid-cols-2 lg:grid-cols-4 gap-2">
+      {/* Infinite scrolling text marquee - even spacing including first/last, seamless loop */}
+      <div className="bg-white border-b border-gray-100 w-full overflow-hidden py-3">
+        <div className="marquee-track flex w-[200vw] shrink-0 justify-evenly items-center px-4 sm:px-6">
           {[
-            {
-              icon: "🏆",
-              text: "Top Brands Only",
-              sub: "100% Authentic",
-              color: "bg-yellow-50 border-yellow-200",
-            },
-            {
-              icon: "💎",
-              text: "Premium Quality",
-              sub: "Verified Products",
-              color: "bg-purple-50 border-purple-200",
-            },
-            {
-              icon: "⚡",
-              text: "Flash Deals",
-              sub: "Every Hour",
-              color: "bg-orange-50 border-orange-200",
-            },
-            {
-              icon: "🌟",
-              text: "5★ Reviews",
-              sub: "1M+ Happy Customers",
-              color: "bg-green-50 border-green-200",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border ${item.color} hover:scale-[1.02] transition-transform cursor-pointer`}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <div>
-                <div className="text-xs font-bold text-gray-800">
+            { text: "Top Brands Only", sub: "100% Authentic" },
+            { text: "Premium Quality", sub: "Verified Products" },
+            { text: "Flash Deals", sub: "Every Hour" },
+            { text: "5★ Reviews", sub: "1M+ Happy Customers" },
+          ]
+            .concat([
+              { text: "Top Brands Only", sub: "100% Authentic" },
+              { text: "Premium Quality", sub: "Verified Products" },
+              { text: "Flash Deals", sub: "Every Hour" },
+              { text: "5★ Reviews", sub: "1M+ Happy Customers" },
+            ])
+            .map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col shrink-0 text-center"
+                aria-hidden={i >= 4}
+              >
+                <span className="text-xs font-bold text-gray-800 whitespace-nowrap">
                   {item.text}
-                </div>
-                <div className="text-xs text-gray-500">{item.sub}</div>
+                </span>
+                <span className="text-xs text-gray-500 whitespace-nowrap">
+                  {item.sub}
+                </span>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
