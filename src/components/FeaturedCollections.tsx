@@ -9,22 +9,38 @@ const bestSellers = [
   { id: 2, name: "Himalaya Face Wash Neem 150ml", price: 149, originalPrice: 220, discount: 32, image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&q=80" },
   { id: 3, name: "Casio Vintage A168 Watch", price: 1695, originalPrice: 2495, discount: 32, image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400&q=80" },
   { id: 4, name: "Amul Butter 500g", price: 265, originalPrice: 295, discount: 10, image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80" },
-  { id: 5, name: "Philips Air Fryer HD9200", price: 5299, originalPrice: 7999, discount: 34, image: "https://images.unsplash.com/photo-1585303526118-0c2e0e1d8a2f?w=400&q=80" },
+  { id: 5, name: "Philips Air Fryer HD9200", price: 5299, originalPrice: 7999, discount: 34, image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" },
   { id: 6, name: "Prestige Induction Cooktop", price: 1599, originalPrice: 2599, discount: 38, image: "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400&q=80" },
 ];
 
 const newArrivals = [
   { id: 7, name: "OnePlus 12R 5G 8GB 256GB", price: 29999, originalPrice: 34999, discount: 14, image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&q=80" },
-  { id: 8, name: "Zara Floral Maxi Dress", price: 2990, originalPrice: 4990, discount: 40, image: "https://images.unsplash.com/photo-1595777457583-95e059d58199?w=400&q=80" },
+  { id: 8, name: "Zara Floral Maxi Dress", price: 2990, originalPrice: 4990, discount: 40, image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" },
   { id: 9, name: "boAt Rockerz 550 Headphones", price: 1299, originalPrice: 3990, discount: 67, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" },
   { id: 10, name: "Himalayan Serenity Yoga Mat", price: 1499, originalPrice: 2499, discount: 40, image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&q=80" },
-  { id: 11, name: "JBL Flip 6 Bluetooth Speaker", price: 8999, originalPrice: 14999, discount: 40, image: "https://images.unsplash.com/photo-1545454670-ea1d4c2e0b6e?w=400&q=80" },
+  { id: 11, name: "JBL Flip 6 Bluetooth Speaker", price: 8999, originalPrice: 14999, discount: 40, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" },
   { id: 12, name: "Adidas Ultraboost 23 Running", price: 11999, originalPrice: 18999, discount: 37, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" },
 ];
 
 type Product = typeof bestSellers[0];
 
 function CarouselCard({ product, href }: { product: Product; href: string }) {
+  // #region agent log
+  const onImageError = () => {
+    fetch("http://127.0.0.1:7829/ingest/2658adbd-c9d9-415f-ae4e-c0a45eccac3f", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "73cb72" },
+      body: JSON.stringify({
+        sessionId: "73cb72",
+        location: "FeaturedCollections.tsx:CarouselCard",
+        message: "Image load failed",
+        data: { productId: product.id, productName: product.name, src: product.image?.slice(0, 60) },
+        timestamp: Date.now(),
+        hypothesisId: "H1",
+      }),
+    }).catch(() => {});
+  };
+  // #endregion
   return (
     <Link href={href} className="group flex-shrink-0 w-[160px] sm:w-[180px] block">
       <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-2 shadow-sm group-hover:shadow-md transition-shadow">
@@ -35,6 +51,7 @@ function CarouselCard({ product, href }: { product: Product; href: string }) {
           height={180}
           sizes="(max-width: 640px) 160px, 180px"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={onImageError}
         />
       </div>
       <p className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-orange-600 transition-colors">
